@@ -30,6 +30,12 @@ import axios from 'axios';
 
 export default {
   name: "AdminCreate",
+  created() {
+    //when unAuthorized
+    if(localStorage.getItem('token') === null || localStorage.getItem('refreshToken') === null) {
+      this.$router.push('/login');
+    } 
+  },
   data() {
     return {
       baseUrl: 'http://localhost:3000',

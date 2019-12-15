@@ -61,7 +61,11 @@ export default {
 
       try {
         const response = await axios.post(this.baseUrl + `/account/loginAdmin`,loginedAdminJson);
-        console.log(response);
+        const token = response.data.token;
+        const refreshToken = response.data.refreshToken;
+        localStorage.setItem('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
+        this.$router.push('/');
       } catch (err) {
           this.alertMessage = err.response.data.message;
           this.alertStatusCode = err.response.data.statusCode;
@@ -74,3 +78,4 @@ export default {
   }
 };
 </script>
+
