@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="alert" :class="{'alert-danger':alertStatusCode!==200}" role="alert" v-if="alertMessage!==''">
+      {{ alertMessage }}
+    </div>
     <form>
       <div class="form-group row">
         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
@@ -31,7 +34,9 @@ export default {
     return {
       baseUrl: 'http://localhost:3000',
       email: '',
-      password: ''
+      password: '',
+      alertMessage: '',
+      alertStatusCode: 200
     }
   },
   methods: {
@@ -41,14 +46,18 @@ export default {
             password: this.password
           };
 
-          console.log(newAdminJson);
 
-          try{
-              const response = await axios.post(this.baseUrl + `/account/admin/create`, newAdminJson);
-              console.log(response);
-          } catch(err) {
-              console.log(err);
-          }
+          try {
+            const response = await axios.post(this.baseUrl + `/account/createAdmin`, newAdminJson);
+            console.log(response);
+          } catch (err) {
+            this.alertMessage = err.response.data.message;
+            this.alertStatusCode = err.response.data.statusCode;
+            setTimeout(function(){
+            this.alertMessage = '';
+            this.alertStatusCode = 200;
+          }.bind(this), 3000);
+      }
 
       }
   }
