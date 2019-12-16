@@ -52,9 +52,15 @@ export default {
             password: this.password
           };
 
+           const headers = { 
+                "token": localStorage.getItem('token'),
+                "refreshToken": localStorage.getItem('refreshToken')
+          };
 
+          const options = { headers: headers};
+          
           try {
-            const response = await axios.post(this.baseUrl + `/account/createAdmin`, newAdminJson);
+            const response = await axios.post(this.baseUrl + `/account/createAdmin`, newAdminJson, options);
             console.log(response);
           } catch (err) {
             this.alertMessage = err.response.data.message;
