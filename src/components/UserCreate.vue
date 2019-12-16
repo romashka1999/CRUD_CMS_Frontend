@@ -6,35 +6,39 @@
       role="alert"
       v-if="alertMessage!==''"
     >{{ alertMessage }}</div>
-    <form>
-      <div class="form-group row">
-        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-          <input
-            type="email"
-            class="form-control"
-            id="inputEmail"
-            placeholder="Email"
-            v-model="email"
-          />
+    <div class="card">
+        <div class="card-header">
+            <h3>Create User :  </h3>
         </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-          <input
-            type="password"
-            class="form-control"
-            id="inputPassword"
-            placeholder="Password"
-            v-model="password"
-          />
+        <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control">
+                </div>
+                <div class="form-group"><label>Email</label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" name="phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="text" name="website" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="file" name="picture" class="form-control-file">
+                </div>
+                <button @click.prevent="createUser" class="btn btn-primary">Create Admin</button>
+            </form>
         </div>
-      </div>
-
-      <button @click.prevent="createAdmin" class="btn btn-primary">Create Admin</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -43,7 +47,7 @@
 import axios from "axios";
 
 export default {
-  name: "AdminCreate",
+  name: "UserCreate",
   created() {
     //when unAuthorized
     if (
@@ -63,7 +67,7 @@ export default {
     };
   },
   methods: {
-    async createAdmin() {
+    async createUser() {
       const newAdminJson = {
         email: this.email,
         password: this.password
