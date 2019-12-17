@@ -14,7 +14,7 @@
     <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
             <a href="#" class="nav-link text-dark font-italic bg-light">
-                <strong>Dashboard</strong>
+              <router-link :to="{ path: '/'}" append class="nav-link text-dark font-italic"><strong>Dashboard</strong></router-link>
             </a>
         </li>
         <li class="nav-item">
@@ -59,13 +59,31 @@
 </style>
 
 <script>
+// import axios from 'axios';
+
 export default {
   name: "Home",
-  created() {
+  async created() {
     //when unAuthorized
     if(localStorage.getItem('token') === null || localStorage.getItem('refreshToken') === null) {
       this.$router.push('/login');
     } 
+
+    // const headers = {
+    //     token: localStorage.getItem("token"),
+    //     refreshToken: localStorage.getItem("refreshToken")
+    //   };
+
+    //   const options = { headers: headers };
+
+    //   try {
+    //     const response = await axios.get(this.baseUrl + `/account/getLoginedAdmin`, options);
+    //     console.log(response.data);
+        
+    //   } catch (error) {
+    //       console.log(error.response.data);
+          
+    //   }
   },
   methods: {
     logout() {

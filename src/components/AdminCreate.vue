@@ -14,7 +14,7 @@
     <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
             <a href="#" class="nav-link text-dark font-italic bg-light">
-                <strong>Dashboard</strong>
+                <router-link :to="{ path: '/'}" append class="nav-link text-dark font-italic"><strong>Dashboard</strong></router-link>
             </a>
         </li>
         <li class="nav-item">
@@ -30,46 +30,38 @@
 
 <!-- Page content holder -->
 <div class="page-content p-5" id="content">
-    <div class="container">
-        <div class="container">
-    <div
-      class="alert"
-      :class="{'alert-danger':alertStatusCode!==200}"
-      role="alert"
-      v-if="alertMessage!==''"
-    >{{ alertMessage }}</div>
-    <form>
-      <div class="form-group row">
-        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-          <input
-            type="email"
-            class="form-control"
-            id="inputEmail"
-            placeholder="Email"
-            v-model="email"
-          />
+      <div class="container">
+
+        <div v-if="alertStatusCode" class="col-md-12"> 
+            <div class="alert" :class="alertStatusCode === 400 ? 'alert-danger': alertStatusCode === 300 ? 'alert-warning': 'alert-success'">
+                {{alertMessage}}
+            </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+              <h3>Create Admin :  </h3>
+          </div>
+          <div class="card-body">
+              <form>
+                  <div class="form-group">
+                      <label>Email</label>
+                      <input type="text" class="form-control" v-model="email"/>
+                  </div>
+                  <div class="form-group">
+                      <label>Password</label>
+                      <input type="text" class="form-control" v-model="password"/>
+                  </div>
+                  <div class="form-group">
+                      <label>Repeat Password</label>
+                      <input type="text" class="form-control" v-model="repeatedPassword"/>
+                  </div>
+                  <button @click.prevent="createAdmin" class="btn btn-primary">Create Admin</button>
+              </form>
+          </div>
         </div>
       </div>
-
-      <div class="form-group row">
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-          <input
-            type="password"
-            class="form-control"
-            id="inputPassword"
-            placeholder="Password"
-            v-model="password"
-          />
-        </div>
-      </div>
-
-      <button @click.prevent="createAdmin" class="btn btn-primary">Create Admin</button>
-    </form>
   </div>
-    </div>
-</div>
 </div>
 
 
@@ -96,12 +88,18 @@ export default {
       baseUrl: "http://localhost:3000",
       email: "",
       password: "",
+      repeatedPassword: "",
       alertMessage: "",
-      alertStatusCode: 200
+      alertStatusCode: null
     };
   },
   methods: {
     async createAdmin() {
+
+      if (!this.validateRegisterForm()) {
+        return;
+      }
+
       const newAdminJson = {
         email: this.email,
         password: this.password
@@ -121,18 +119,34 @@ export default {
           options
         );
         console.log(response);
+        this.alertM(200, 'admin successfully created');
       } catch (err) {
-        this.alertMessage = err.response.data.message;
-        this.alertStatusCode = err.response.data.statusCode;
-        setTimeout(
-          function() {
-            this.alertMessage = "";
-            this.alertStatusCode = 200;
-          }.bind(this),
-          3000
-        );
+          console.log(err);
+          this.alertM(400, err.response.data.message);
       }
+    },
+    validateRegisterForm() {
+        if(this.email === '' || this.password === '' || this.repeatedPassword === '') {
+                this.alertM(300, 'please fill all input value');
+                return false
+        }
+        if(this.password !== this.repeatedPassword) {
+            this.alertM(300, 'password does not match');
+            return false;
+        }
+        return true;
+    },
+    alertM(alertStatusCode, alertMessage) {
+        this.alertStatusCode = alertStatusCode;
+        this.alertMessage = alertMessage;
+        console.log(this.alertStatusCode);
+        console.log(this.alertMessage);
+        setTimeout( function () {
+            this.alertStatusCode = null;
+            this.alertMessage = '';
+        }.bind(this), 4000);
     }
-  }
+  },
+  
 };
 </script>

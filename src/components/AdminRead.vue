@@ -3,6 +3,7 @@
     <br>
     <p>
       <router-link :to="{ path: '/createAdmin'}" append  class="btn btn-outline-success" >Create New Admin</router-link>
+      <router-link :to="{ path: '/'}" append  class="btn btn-outline-info" style="margin-left:10px">Home</router-link>
     </p>
   
     <table class="table">

@@ -2,7 +2,8 @@
   <div class="container">
     <br>
     <p>
-        <a style="font-size:30px" href="create.php" class="btn btn-outline-success">Create New User</a>
+      <router-link :to="{ path: '/createUser'}" append  class="btn btn-outline-success" >Create New User</router-link>
+      <router-link :to="{ path: '/'}" append  class="btn btn-outline-info" style="margin-left:10px">Home</router-link>
     </p>
   
     <table class="table">
@@ -17,16 +18,17 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td> echo $user['name']</td>
-                <td> echo $user['userna</td>
-                <td> echo $user['email'</td>
-                <td> echo $user['name']</td>
-                <td> echo $user['name']</td>
+            <tr v-for="user in users"  v-bind:key="user">
+                <td> {{user.id}}</td>
+                <td> {{user.firstName}}</td>
+                <td> {{user.lastName}}</td>
+                <td> {{user.username}}</td>
+                <td> {{user.email}}</td>
+                <td> {{user.password}}</td>
                 <td>
-                    <a class="btn btn-sm btn-outline-primary" >View</a>
-                    <a class="btn btn-sm btn-outline-info" >Update</a>
-                    <a class="btn btn-sm btn-outline-danger" >Delete</a>
+                    <router-link :to="{ path: '/viewAdmin'}" append class="btn btn-sm btn-primary" :id="user.id" style="margin-left:5px">View</router-link>
+                    <router-link :to="{ path: '/updateAdmin'}" append class="btn btn-sm btn-info" :id="user.id" style="margin-left:5px">Update</router-link>
+                    <router-link :to="{ path: '/deleteAdmin'}" append class="btn btn-sm btn-danger" :id="user.id" style="margin-left:5px">Delete</router-link>
                 </td>
             </tr>
 
@@ -43,7 +45,8 @@ export default {
   data() {
     return {
       baseUrl: "http://localhost:3000",
-      error: ""
+      error: "",
+      users: []
     };
   },
   async created() {
@@ -62,7 +65,9 @@ export default {
           refreshToken: localStorage.getItem("refreshToken")
         }
       });
-      console.log(response.data);
+      console.log(response);
+      this.users = response.data;
+      console.log(this.admins);
     } catch (err) {
       this.error = err.response.data;
     }
