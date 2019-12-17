@@ -50,11 +50,11 @@
                   </div>
                   <div class="form-group">
                       <label>Password</label>
-                      <input type="text" class="form-control" v-model="password"/>
+                      <input type="password" class="form-control" v-model="password"/>
                   </div>
                   <div class="form-group">
                       <label>Repeat Password</label>
-                      <input type="text" class="form-control" v-model="repeatedPassword"/>
+                      <input type="password" class="form-control" v-model="repeatedPassword"/>
                   </div>
                   <button @click.prevent="createAdmin" class="btn btn-primary">Create Admin</button>
               </form>
