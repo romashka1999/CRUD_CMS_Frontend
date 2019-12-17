@@ -5,8 +5,10 @@ import Home from './components/Home';
 import Login from './components/Login';
 import AdminCreate from './components/AdminCreate';
 import AdminRead from './components/AdminRead';
+import AdminView from './components/AdminView';
 import UserRead from './components/UserRead';
 import UserCreate from './components/UserCreate';
+import UserView from './components/UserView';
 
 Vue.use(VueRouter);
 
@@ -17,6 +19,8 @@ const routes = [
     {path: '/createUser', component: UserCreate},
     {path: '/readAdmin', component: AdminRead},
     {path: '/readUser', component: UserRead},
+    {path: '/viewAdmin', component: AdminView},
+    {path: '/viewUser', component: UserView},
     {path: '*', redirect: '/'}
 ];
 

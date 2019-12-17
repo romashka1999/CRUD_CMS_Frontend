@@ -23,12 +23,34 @@
                 <td>
                     <router-link :to="{ path: '/viewAdmin'}" append class="btn btn-sm btn-primary" :id="admin.id" style="margin-left:5px">View</router-link>
                     <router-link :to="{ path: '/updateAdmin'}" append class="btn btn-sm btn-info" :id="admin.id" style="margin-left:5px">Update</router-link>
-                    <router-link :to="{ path: '/deleteAdmin'}" append class="btn btn-sm btn-danger" :id="admin.id" style="margin-left:5px">Delete</router-link>
+                    <button @click.prevent = "deletedIdAssign" class="btn btn-sm btn-danger" :id="admin.id" style="margin-left:5px" data-toggle="modal" data-target="#exampleModal">Delete</button>
                 </td>
             </tr>
 
         </tbody>
     </table>
+
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are You Sure? Do U really want to delete ?
+      </div>
+      <div class="modal-footer">
+        <button  class="btn btn-primary" data-dismiss="modal" @click="deletedId = null">No</button>
+        <button  class="btn btn-danger" data-dismiss="modal" @click="deleteAdmin">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </template>
 
@@ -40,8 +62,8 @@ export default {
   data() {
     return {
       baseUrl: "http://localhost:3000",
-      error: "",
-      admins: []
+      admins: [],
+      deletedId: null
     };
   },
   async created() {
@@ -68,6 +90,15 @@ export default {
       console.log(this.error);
     }
   },
-  methods: {}
+  methods: {
+    deleteAdmin() {
+
+      console.log(this.deletedId);
+
+    },
+    deletedIdAssign(event){
+      this.deletedId = event.target.getAttribute('id');
+    }
+  }
 };
 </script>
