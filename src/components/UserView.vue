@@ -31,8 +31,37 @@
 <!-- Page content holder -->
 <div class="page-content p-5" id="content">
     <div class="container">
-        <button type="button" class="btn btn-danger" @click="logout">Logout</button>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h3>View User :  <b>{{user.id}}</b></h3>
+        </div>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>firstname:</th>
+                <td>{{user.firstName}}</td>
+            </tr>
+            <tr>
+                <th>lastname:</th>
+                <td>{{user.lastName}}</td>
+            </tr>
+            <tr>
+                <th>username:</th>
+                <td>{{user.username}}</td>
+            </tr>
+            <tr>
+                <th>email:</th>
+                <td>{{user.email}}</td>
+            </tr>
+            <tr>
+                <th>password:</th>
+                <td>{{user.password}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 </div>
 </div>
 </template>
@@ -57,7 +86,43 @@
 </style>
 
 <script>
+import axios from 'axios';
+
+
 export default {
     name: 'UserView',
+    data() {
+        return {
+            baseUrl: "http://localhost:3000",
+            user: {}
+        }
+    },
+    created() {
+    //when unAuthorized
+        if (
+        localStorage.getItem("token") === null ||
+        localStorage.getItem("refreshToken") === null
+        ) {
+            return this.$router.push("/login");
+        }
+
+        this.getUserById(this.$route.params.id);
+    },
+  methods: {
+    async getUserById(id) {
+            try {
+            const response = await axios.get(this.baseUrl + `/account/getUserById/${id}`, {
+                headers: {
+                    token: localStorage.getItem("token"),
+                    refreshToken: localStorage.getItem("refreshToken")
+                }
+            });
+                this.user = response.data;
+                console.log(this.admin);
+            } catch (err) {
+                console.log(err.response.data);
+            }
+        }
+    },
 }
 </script>

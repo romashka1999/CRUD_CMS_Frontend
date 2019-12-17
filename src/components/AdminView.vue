@@ -34,40 +34,17 @@
     <br>
     <div class="card">
         <div class="card-header">
-            <h3>View User :  <b>sdfg></b></h3>
+            <h3>View Admin :  <b>{{admin.id}}</b></h3>
         </div>
         <table class="table">
             <tbody>
             <tr>
-                <th>Name:</th>
-                <td>sdfg</td>
+                <th>firstname:</th>
+                <td>{{admin.email}}</td>
             </tr>
             <tr>
-                <th>Username:</th>
-                <td>sgf</td>
-            </tr>
-            <tr>
-                <th>Email:</th>
-                <td>sdfg</td>
-            </tr>
-            <tr>
-                <th>Phone:</th>
-                <td>sdfg</td>
-            </tr>
-            <tr>
-                <th>Website:</th>
-                <td>
-                    <a href="http://<?php echo $currentUser['website'];?>" target="_blank">
-                        sfgsdfg
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <th>Picture:</th>
-                <td>
-                    img
-
-                </td>
+                <th>lastname:</th>
+                <td>{{admin.password}}</td>
             </tr>
             </tbody>
         </table>
@@ -97,7 +74,43 @@
 </style>
 
 <script>
+import axios from 'axios';
+
+
 export default {
     name: 'AdminView',
+    data() {
+        return {
+            baseUrl: "http://localhost:3000",
+            admin: {}
+        }
+    },
+    created() {
+    //when unAuthorized
+        if (
+        localStorage.getItem("token") === null ||
+        localStorage.getItem("refreshToken") === null
+        ) {
+            return this.$router.push("/login");
+        }
+
+        this.getAdminById(this.$route.params.id);
+    },
+  methods: {
+    async getAdminById(id) {
+            try {
+            const response = await axios.get(this.baseUrl + `/account/getAdminById/${id}`, {
+                headers: {
+                    token: localStorage.getItem("token"),
+                    refreshToken: localStorage.getItem("refreshToken")
+                }
+            });
+                this.admin = response.data;
+                console.log(this.admin);
+            } catch (err) {
+                console.log(err.response.data);
+            }
+        }
+    },
 }
 </script>

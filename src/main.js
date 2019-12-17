@@ -19,8 +19,8 @@ const routes = [
     {path: '/createUser', component: UserCreate},
     {path: '/readAdmin', component: AdminRead},
     {path: '/readUser', component: UserRead},
-    {path: '/viewAdmin', component: AdminView},
-    {path: '/viewUser', component: UserView},
+    {path: '/viewAdmin/:id', component: AdminView},
+    {path: '/viewUser/:id', component: UserView},
     {path: '*', redirect: '/'}
 ];
 

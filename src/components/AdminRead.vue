@@ -21,7 +21,7 @@
                 <td> {{admin.email}}</td>
                 <td> {{admin.password}}</td>
                 <td>
-                    <router-link :to="{ path: '/viewAdmin'}" append class="btn btn-sm btn-primary" :id="admin.id" style="margin-left:5px">View</router-link>
+                    <router-link :to="`/viewAdmin/${admin.id}`" append class="btn btn-sm btn-primary" style="margin-left:5px">View</router-link>
                     <router-link :to="{ path: '/updateAdmin'}" append class="btn btn-sm btn-info" :id="admin.id" style="margin-left:5px">Update</router-link>
                     <button @click.prevent = "deletedIdAssign" class="btn btn-sm btn-danger" :id="admin.id" style="margin-left:5px" data-toggle="modal" data-target="#exampleModal">Delete</button>
                 </td>
