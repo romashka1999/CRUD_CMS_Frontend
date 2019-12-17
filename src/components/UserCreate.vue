@@ -13,29 +13,29 @@
         <div class="card-body">
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" name="name" class="form-control">
+                    <label>firstName</label>
+                    <input type="text" class="form-control" v-model="firstName"/>
                 </div>
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" class="form-control">
+                    <label>lastName</label>
+                    <input type="text" class="form-control" v-model="la"/>
                 </div>
-                <div class="form-group"><label>Email</label>
-                    <input type="text" name="email" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" name="phone" class="form-control">
+                <div class="form-group"><label>Username</label>
+                    <input type="text" class="form-control" v-model="username"/>
                 </div>
                 <div class="form-group">
-                    <label>Website</label>
-                    <input type="text" name="website" class="form-control">
+                    <label>Email</label>
+                    <input type="text" class="form-control" v-model="email"/>
                 </div>
                 <div class="form-group">
-                    <label>Image</label>
-                    <input type="file" name="picture" class="form-control-file">
+                    <label>Password</label>
+                    <input type="text" class="form-control" v-model="password"/>
                 </div>
-                <button @click.prevent="createUser" class="btn btn-primary">Create Admin</button>
+                <div class="form-group">
+                    <label>Repeat Password</label>
+                    <input type="text" class="form-control" v-model="repeatedPassword"/>
+                </div>
+                <button @click.prevent="createUser" class="btn btn-primary">Create User</button>
             </form>
         </div>
     </div>
@@ -60,18 +60,26 @@ export default {
   data() {
     return {
       baseUrl: "http://localhost:3000",
-      email: "",
-      password: "",
-      alertMessage: "",
-      alertStatusCode: 200
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      repeatedPassword: '',
+      statusCode: 200,
+      alertMessage: ''
     };
   },
   methods: {
     async createUser() {
-      const newAdminJson = {
-        email: this.email,
-        password: this.password
-      };
+
+      const newUserJson = {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          email: this.email,
+          password: this.password
+      }
 
       const headers = {
         token: localStorage.getItem("token"),
@@ -82,22 +90,35 @@ export default {
 
       try {
         const response = await axios.post(
-          this.baseUrl + `/account/createAdmin`,
-          newAdminJson,
+          this.baseUrl + `/account/createUser`,
+          newUserJson,
           options
         );
         console.log(response);
-      } catch (err) {
-        this.alertMessage = err.response.data.message;
-        this.alertStatusCode = err.response.data.statusCode;
-        setTimeout(
-          function() {
-            this.alertMessage = "";
-            this.alertStatusCode = 200;
-          }.bind(this),
-          3000
-        );
+      } catch (error) {
+          console.log(error.response.data);
+          this.alertM(400, error.response.data.message);
       }
+    },
+    validateRegisterForm() {
+        if(this.firstName === '' || this.lastName === '' || this.username === '' ||
+            this.email === '' || this.password === '' || this.repeatedPassword === '') {
+                this.alertM(300, 'please fill all input value');
+                return false
+        }
+        if(this.password !== this.repeatedPassword) {
+            this.alertM(300, 'password does not match');
+            return false;
+        }
+        return true;
+    },
+    alertM(statusCode, alertMessage) {
+        this.statusCode = statusCode;
+        this.alertMessage = alertMessage;
+        setTimeout( function () {
+            this.statusCode = 200;
+            this.alertMessage = '';
+        }.bind(this), 4000);
     }
   }
 };

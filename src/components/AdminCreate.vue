@@ -1,5 +1,37 @@
 <template>
-  <div class="container">
+<div>
+<div class="vertical-nav bg-white">
+    <div class="py-4 px-3 mb-4 bg-light">
+        <div class="media d-flex align-items-center"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            <div class="media-body">
+                <h4 class="m-0">Romana1</h4>
+                <p class="font-weight-light text-muted mb-0">Web developer</p>
+            </div>
+        </div>
+    </div>
+
+
+    <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic bg-light">
+                <strong>Dashboard</strong>
+            </a>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ path: '/readAdmin'}" append class="nav-link text-dark font-italic">Admins</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ path: '/readUser'}" append class="nav-link text-dark font-italic">Users</router-link>
+        </li>
+    </ul>
+</div>
+<!-- End vertical navbar -->
+
+
+<!-- Page content holder -->
+<div class="page-content p-5" id="content">
+    <div class="container">
+        <div class="container">
     <div
       class="alert"
       :class="{'alert-danger':alertStatusCode!==200}"
@@ -36,6 +68,12 @@
       <button @click.prevent="createAdmin" class="btn btn-primary">Create Admin</button>
     </form>
   </div>
+    </div>
+</div>
+</div>
+
+
+  
 </template>
 
 

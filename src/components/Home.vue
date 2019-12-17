@@ -31,7 +31,7 @@
 <!-- Page content holder -->
 <div class="page-content p-5" id="content">
     <div class="container">
-        Dashboard
+        <button type="button" class="btn btn-danger" @click="logout">Logout</button>
     </div>
 </div>
 </div>
