@@ -75,7 +75,11 @@ export default {
       return this.$router.push("/login");
     }
 
-    try {
+    this.getAllAdmins();
+  },
+  methods: {
+    async getAllAdmins() {
+      try {
       const response = await axios.get(this.baseUrl + `/account/getAllAdmins`, {
         headers: {
           token: localStorage.getItem("token"),
@@ -89,11 +93,23 @@ export default {
       this.error = err.response.data;
       console.log(this.error);
     }
-  },
-  methods: {
-    deleteAdmin() {
-
-      console.log(this.deletedId);
+    },
+    async deleteAdmin() {
+      try {
+      const id = this.deletedId;
+      console.log(id);
+      const response = await axios.delete(this.baseUrl + `/account/deleteAdminById/${id}`, {
+        headers: {
+          token: localStorage.getItem("token"),
+          refreshToken: localStorage.getItem("refreshToken")
+        }
+      });
+        console.log(response.data);
+        this.getAllAdmins();
+      } catch (err) {
+        this.error = err.response.data;
+        console.log(this.error);
+      }
 
     },
     deletedIdAssign(event){

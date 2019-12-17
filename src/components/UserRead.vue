@@ -79,7 +79,11 @@ export default {
       return this.$router.push("/login");
     }
 
-    try {
+    this.getAllUsers();
+  },
+  methods: {
+    async getAllUsers() {
+      try {
       const response = await axios.get(this.baseUrl + `/account/getAllUsers`, {
         headers: {
           token: localStorage.getItem("token"),
@@ -92,12 +96,23 @@ export default {
     } catch (err) {
       this.error = err.response.data;
     }
-  },
-  methods: {
-    deleteUser() {
-
-      console.log(this.deletedId);
-
+    },
+    async deleteUser() {
+        try {
+        const id = this.deletedId;
+        console.log(id);
+        const response = await axios.delete(this.baseUrl + `/account/deleteUserById/${id}`, {
+          headers: {
+            token: localStorage.getItem("token"),
+            refreshToken: localStorage.getItem("refreshToken")
+          }
+        });
+          console.log(response.data);
+          this.getAllUsers();
+        } catch (err) {
+          this.error = err.response.data;
+          console.log(this.error);
+        }
     },
     deletedIdAssign(event){
       this.deletedId = event.target.getAttribute('id');
